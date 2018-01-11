@@ -59,3 +59,60 @@ describe('/POST register', () => {
             })
     })
 })
+
+describe('/POST login', () => {
+    it('it should not login when input wrong username', (done) => {
+        let user = {
+            username: "sunqqqqq", 
+            password: "sunn"
+        }
+
+        chai.request('http://localhost:3000')
+            .post('/auth/login')
+            .send(user)
+            .end((err, res) => {
+                res.should.have.status(400)
+                res.body.should.be.a('object')
+                res.body.should.have.property('error')
+                res.body.should.have.property('message')
+                done()
+            })
+    })
+
+    it('it should not login when input wrong password', (done) => {
+        let user = {
+            username: "sun", 
+            password: "sunn11111"
+        }
+
+        chai.request('http://localhost:3000')
+            .post('/auth/login')
+            .send(user)
+            .end((err, res) => {
+                res.should.have.status(400)
+                res.body.should.be.a('object')
+                res.body.should.have.property('error')
+                res.body.should.have.property('message')
+                done()
+            })
+    })
+
+    it('it should login', (done) => {
+        let user = {
+            username: "sun", 
+            password: "sunn"
+        }
+
+        chai.request('http://localhost:3000')
+            .post('/auth/login')
+            .send(user)
+            .end((err, res) => {
+                res.should.have.status(200)
+                res.body.should.be.a('object')
+                res.body.user.should.have.property('username')
+                res.body.user.should.have.property('email')
+                res.body.user.should.have.property('_id')
+                done()
+            })
+    })
+})

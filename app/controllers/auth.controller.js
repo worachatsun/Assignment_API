@@ -67,7 +67,10 @@ exports.verifyCredentials = async (req, h) => {
             ]
         }).exec()
         const isValid = await bcrypt.compareSync(password, user.password)
-        return user
+        if(isValid)
+            return user
+        else
+            return Boom.badRequest('wrong password')
     } catch (error) {
         return Boom.badRequest(error)
     }
