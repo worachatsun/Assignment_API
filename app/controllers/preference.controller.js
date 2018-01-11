@@ -48,6 +48,7 @@ exports.updatePreference = async (req, h) => {
     }
 
     try {
+        await Joi.validate({ language, timezone, currency, profile_visibility, message, category, _id }, validateSchema.preferenceSchema)
         const preference = await Preference.findOneAndUpdate({created_by: _id}, updateData, {new: true}).exec()
         return preference
     } catch (error) {
