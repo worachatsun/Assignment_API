@@ -1,9 +1,9 @@
 const Joi = require('joi')
 
 const userSchema = Joi.object().keys({
-    username: Joi.string().alphanum().min(3).max(10).required(),
+    username: Joi.string().alphanum().min(3).max(10).required().error(new Error('Username must contain 3 to 10 characters.')),
     password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
-    email: Joi.string().email().required()
+    email: Joi.string().email().required().error(new Error('Please follow email format.'))
 })
 
 const preferenceSchema = Joi.object().keys({
