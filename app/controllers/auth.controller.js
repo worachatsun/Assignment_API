@@ -36,7 +36,11 @@ exports.register = async (req, h) => {
         delete dataCreateToken._doc.password
         return { token: createJWTToken(dataCreateToken._doc), user: dataCreateToken._doc }
     } catch (error) {
-        return Boom.badRequest(error)
+        if (error.name === 'MongoError' && error.code === 11000) {
+            return Boom.badRequest('Your email or username has already been used')
+        }else{
+            return Boom.badRequest(error)
+        }
     }
 }
 
